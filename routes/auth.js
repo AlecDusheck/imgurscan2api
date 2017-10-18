@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
                 });
                 res.json({
                     success: true,
-                    message: 'Token create. Valid for 24 hours.',
+                    message: 'Token created. Valid for 24 hours.',
                     token: token
                 });
             }
