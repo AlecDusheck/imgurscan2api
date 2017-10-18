@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
     }, function (err, user) {
         if (err) throw err;
         if (!user) {
-            res.json({success: false, message: 'Authentication failed. User not found.'});
+            res.json({success: false, message: 'Failed to generate token. User not found.'});
         } else if (user) {
 
             // check if password matches
