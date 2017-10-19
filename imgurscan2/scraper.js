@@ -7,6 +7,28 @@ module.exports = {
         var requestLoop = setInterval(function () {
             getUrl(function (results) {
                 console.log("GENERATED LINK FOR " + queryID + " (" + results + ").");
+
+                imgurQuery.findOne({
+                    queryID: queryID
+                }, function (err, ImgurQueries) {
+                    if (err) throw err;
+                    if (!ImgurQueries) {
+                        clearInterval(requestLoop);
+                    } else if (ImgurQueries) {
+                        //var data = JSON.parse(ImgurQueries.results);
+                        //data['queries'].push({link: results});
+                        var obj = JSON.parse(ImgurQueries.results);
+                        obj['queries'].push({"link":results});
+                        var query = { queryID : queryID };
+                        imgurQuery.update(query, { results: JSON.stringify(obj) }, function (err) {
+                            if (err) return console.error(err);
+                            if(obj.queries.length > ImgurQueries.numberOfImages){
+                                clearInterval(requestLoop);
+                                console.log("Stopping");
+                            }
+                        })
+                    }
+                });
             });
         }, 500);
     }

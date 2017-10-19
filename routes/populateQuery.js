@@ -7,24 +7,29 @@ var async = require('async');
 var User = require('../models/apiUser');
 var Query = require('../models/imgurQuery');
 
-/* GET populateQuery page. */
-router.get('/', function (req, res, next) {
+/* POST populateQuery page. */
+router.post('/', function (req, res, next) {
 
-    generateValidID(function (results) {
-        var query = new Query({
-            queryID: results,
-            numberOfImages: 20,
-            issuedAt: new Date()
-        });
+    if (req.body.numOfImages <= parseInt(req.app.get("maxNumberOfQueries"))) {
+        generateValidID(function (results) {
+            var query = new Query({
+                queryID: results,
+                numberOfImages: req.body.numOfImages,
+                issuedAt: new Date(),
+                results: JSON.stringify({"queries":[]})
+            });
 
-        // save the sample user
-        query.save(function(err) {
-            if (err) throw err;
-            var scraper = require('../imgurscan2/scraper');
-            scraper.scraper(results);
-            res.json({success: true, message: 'Created query with id ' + results, queryid: results});
+            // save the sample user
+            query.save(function (err) {
+                if (err) throw err;
+                var scraper = require('../imgurscan2/scraper');
+                scraper.scraper(results);
+                res.json({success: true, message: 'Created query with id ' + results, queryid: results});
+            });
         });
-    });
+    }else{
+        res.json({success: false, message: 'Your requesting too many images to be queried.'});
+    }
 });
 
 function generateValidID(callback) {
@@ -34,8 +39,6 @@ function generateValidID(callback) {
     }, function (err, ImgurQueries) {
         if (err) throw err;
         if (!ImgurQueries) {
-            console.log('done' + canidateUuid);
-            console.log('lol2');
             callback(canidateUuid)
         } else if (ImgurQueries) {
             return generateValidID();

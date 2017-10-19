@@ -5,5 +5,5 @@ module.exports = mongoose.model('ImgurQueries', new Schema({
     queryID: String,
     numberOfImages: Number,
     issuedAt: Date,
-    results: JSON
+    results: String
 }));

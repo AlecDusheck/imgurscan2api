@@ -26,6 +26,8 @@ var mongoose = require('mongoose');
 
 var jwt = require('jsonwebtoken');
 
+var purge = require('./imgurscan2/purge');
+
 var config = require('./config');
 var User   = require('./models/apiUser');
 
@@ -33,33 +35,16 @@ var User   = require('./models/apiUser');
 // ======================================================
 // =                    CONFIG                          =
 // ======================================================
+console.log("Configuring settings.");
 var app = express();
 
-mongoose.connect(config.database)
+mongoose.connect(config.database);
 app.set('tokenCreation', config.secret);
+app.set('maxNumberOfQueries', config.maxNumberOfQueries);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
-// ======================================================
-// =                    ROUTES                          =
-// ======================================================
-
-//Index page
-var index = require('./routes/index');
-
-//REST V1 Routes
-var populateQuery = require('./routes/populateQuery');
-var test = require('./routes/test');
-var findUsers = require('./routes/findUsers');
-var findQueries = require('./routes/findQueries');
-var auth = require('./routes/auth');
-
-//Middleware
-var authMiddleware = require('./middleware/authRoutes');
-
-// -------------------------------------------------------------------
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -67,6 +52,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+console.log("Setting up auto database purging.");
+purge.purge(config.databasePurgeMinutes);
+
+// ======================================================
+// =                    ROUTES                          =
+// ======================================================
+console.log("Defining site routes.");
+
+//Index page
+var index = require('./routes/index');
+
+//REST V1 Routes
+var populateQuery = require('./routes/populateQuery');
+var getResults = require('./routes/getResults');
+var test = require('./routes/test');
+var findUsers = require('./routes/findUsers');
+var findQueries = require('./routes/findQueries');
+var auth = require('./routes/auth');
+
+var createUser = require('./routes/createUser');
+
+//Middleware
+var authMiddleware = require('./middleware/authRoutes');
 
 app.use('/', index);
 
@@ -76,6 +85,9 @@ app.use('/api/private/test', test);
 app.use('/api/private/findUsers', findUsers);
 app.use('/api/private/findQueries', findQueries);
 app.use('/api/auth', auth);
+app.use('/api/getResults', getResults);
+
+app.use('/api/createUser', createUser);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -94,5 +106,8 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+// -------------------------------------------------------------------
+
 
 module.exports = app;
