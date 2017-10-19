@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var jwt = require('jsonwebtoken');
 
 var User   = require('../models/apiUser');
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
+/* POST auth page. */
+router.post('/', function (req, res, next) {
     User.findOne({
         name: req.body.name
     }, function (err, user) {
         if (err) throw err;
         if (!user) {
-            res.json({success: false, message: 'Failed to generate token. User not found.'});
+            res.json({success: false, message: 'Authentication failed. User not found.'});
         } else if (user) {
 
             // check if password matches
@@ -20,8 +21,8 @@ router.get('/', function (req, res, next) {
                 const payload = {
                     admin: user.admin
                 };
-                var token = jwt.sign(payload, app.get('tokenCreation'), {
-                    expiresInMinutes: 1440
+                var token = jwt.sign(payload, req.app.get('tokenCreation'), {
+                    expiresIn : 60*60*24
                 });
                 res.json({
                     success: true,

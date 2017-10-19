@@ -10,7 +10,7 @@
 // =                                                    =
 // =                                                    =
 // ======================================================
-
+console.log("ImgurScan backend started. Waiting for connections.");
 
 // ======================================================
 // =                   REQUIRES                         =
@@ -31,22 +31,6 @@ var User   = require('./models/apiUser');
 
 
 // ======================================================
-// =                    ROUTES                          =
-// ======================================================
-
-//Index page
-var index = require('./routes/index');
-
-//REST V1 Routes
-var populateQuery = require('./routes/populateQuery');
-var test = require('./routes/test');
-var findUsers = require('./routes/findUsers');
-var auth = require('./routes/auth');
-
-//Middleware
-var authMiddleware = require('./middleware/authRoutes');
-
-// ======================================================
 // =                    CONFIG                          =
 // ======================================================
 var app = express();
@@ -58,8 +42,26 @@ app.set('tokenCreation', config.secret);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// ======================================================
+// =                    ROUTES                          =
+// ======================================================
+
+//Index page
+var index = require('./routes/index');
+
+//REST V1 Routes
+var populateQuery = require('./routes/populateQuery');
+var test = require('./routes/test');
+var findUsers = require('./routes/findUsers');
+var findQueries = require('./routes/findQueries');
+var auth = require('./routes/auth');
+
+//Middleware
+var authMiddleware = require('./middleware/authRoutes');
+
+// -------------------------------------------------------------------
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -72,6 +74,7 @@ app.use('/api/private', authMiddleware);
 app.use('/api/private/populateQuery', populateQuery);
 app.use('/api/private/test', test);
 app.use('/api/private/findUsers', findUsers);
+app.use('/api/private/findQueries', findQueries);
 app.use('/api/auth', auth);
 
 // catch 404 and forward to error handler

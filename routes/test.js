@@ -2,15 +2,28 @@ var express = require('express');
 var router = express.Router();
 var mongodb = require('mongodb').MongoClient;
 
-var User   = require('../models/apiUser');
+var imgurQuery   = require('../models/imgurQuery');
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
+
+    imgurQuery.remove({
+        queryID: req.body.queryID
+    }, function (err, user) {
+        if (err) throw err;
+        if (!imgurQuery) {
+            res.json({success: false, message: 'Nothing removed.'});
+        } else if (imgurQuery) {
+            res.json({success: false, message: 'Removed.'});
+        }
+    });
+
+    /*
     // create a sample user
     var nick = new User({
-        name: 'Nick Cerminara',
-        apiToken: 'example token',
+        name: 'alec',
+        apiToken: 'alec112233',
         admin: true
     });
 
@@ -21,6 +34,7 @@ router.get('/', function(req, res, next) {
         console.log('User saved successfully');
         res.json({ success: true });
     });
+    */
 });
 
 module.exports = router;

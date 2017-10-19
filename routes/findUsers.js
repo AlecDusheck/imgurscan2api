@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongodb = require('mongodb').MongoClient;
 
-var User   = require('../models/apiUser');
+var User   = require('../models/imgurQuery');
 
 
 /* GET home page. */
