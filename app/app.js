@@ -10,7 +10,6 @@
 // =                                                    =
 // =                                                    =
 // ======================================================
-console.log("ImgurScan backend started. Waiting for connections.");
 
 // ======================================================
 // =                   REQUIRES                         =
@@ -35,7 +34,13 @@ var config = require('./config');
 console.log("Configuring settings.");
 var app = express();
 
-mongoose.connect(config.database);
+mongoose.connect(config.database, function (err) {
+    if (err) {
+        console.log("Error establishing connection to database! (" + err + ")");
+        process.exit()
+    }
+});
+
 app.set('tokenCreation', config.secret);
 app.set('maxNumberOfQueries', config.maxNumberOfQueries);
 
@@ -64,10 +69,9 @@ var index = require('./routes/index');
 //REST V1 Routes
 var populateQuery = require('./routes/populateQuery');
 var getResults = require('./routes/getResults');
-var test = require('./routes/test');
-var findUsers = require('./routes/findUsers');
 var findQueries = require('./routes/findQueries');
 var auth = require('./routes/auth');
+var bacon = require('./routes/beacon');
 
 var createUser = require('./routes/createUser');
 
@@ -78,11 +82,10 @@ app.use('/', index);
 
 app.use('/api/private', authMiddleware);
 app.use('/api/private/populateQuery', populateQuery);
-app.use('/api/private/test', test);
-app.use('/api/private/findUsers', findUsers);
 app.use('/api/private/findQueries', findQueries);
 app.use('/api/auth', auth);
 app.use('/api/getResults', getResults);
+app.use('/api/beacon', bacon);
 
 app.use('/api/createUser', createUser);
 

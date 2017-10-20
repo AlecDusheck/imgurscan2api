@@ -5,10 +5,12 @@ var sanitize = require('mongo-sanitize');
 var Query = require('../models/imgurQuery');
 
 /* POST getResults page. */
-router.get('/:tagId', function (req, res, next) {
+router.get('/ping/:tagId', function (req, res, next) {
 
+    res.send("tagId is set to " + req.params.tagId);
+    /*
     Query.findOne({
-            queryID: sanitize(req.params.tagId)
+            queryID: sanitize(req.body.queryID)
         },
         '-_id -__v'
         , function (err, ImgurQueries) {
@@ -21,5 +23,6 @@ router.get('/:tagId', function (req, res, next) {
         });
 
 
+    */
 });
 module.exports = router;

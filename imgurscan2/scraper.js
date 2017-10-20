@@ -22,7 +22,7 @@ module.exports = {
 
                         console.log(obj);
 
-                        obj['queries'].push({"link": results});
+                        obj['queries'].push({link: results});
 
 
                         var query = {queryID: queryID};
