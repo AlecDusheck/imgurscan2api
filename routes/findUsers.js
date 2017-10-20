@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('../models/imgurQuery');
+var User = require('../models/apiUser');
 
 
 /* GET home page. */
