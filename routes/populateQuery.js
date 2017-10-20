@@ -1,10 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var jwt = require('jsonwebtoken');
 const uuid = require('uuid/v4');
-var async = require('async');
+var sanitize = require('mongo-sanitize');
 
-var User = require('../models/apiUser');
 var Query = require('../models/imgurQuery');
 
 /* POST populateQuery page. */
@@ -14,9 +12,9 @@ router.post('/', function (req, res, next) {
         generateValidID(function (results) {
             var query = new Query({
                 queryID: results,
-                numberOfImages: req.body.numOfImages,
+                numberOfImages: sanitize(req.body.numOfImages),
                 issuedAt: new Date(),
-                results: JSON.stringify({"queries":[]})
+                results: JSON.stringify({"queries": []})
             });
 
             // save the sample user
@@ -27,7 +25,7 @@ router.post('/', function (req, res, next) {
                 res.json({success: true, message: 'Created query with id ' + results, queryid: results});
             });
         });
-    }else{
+    } else {
         res.json({success: false, message: 'Your requesting too many images to be queried.'});
     }
 });

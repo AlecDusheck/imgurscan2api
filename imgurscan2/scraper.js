@@ -1,6 +1,6 @@
 var request = require("request");
 
-var imgurQuery   = require('../models/imgurQuery');
+var imgurQuery = require('../models/imgurQuery');
 
 module.exports = {
     scraper: function (queryID) {
@@ -17,12 +17,18 @@ module.exports = {
                     } else if (ImgurQueries) {
                         //var data = JSON.parse(ImgurQueries.results);
                         //data['queries'].push({link: results});
+
                         var obj = JSON.parse(ImgurQueries.results);
-                        obj['queries'].push({"link":results});
-                        var query = { queryID : queryID };
-                        imgurQuery.update(query, { results: JSON.stringify(obj) }, function (err) {
+
+                        console.log(obj);
+
+                        obj['queries'].push({"link": results});
+
+
+                        var query = {queryID: queryID};
+                        imgurQuery.update(query, {results: JSON.stringify(obj)}, function (err) {
                             if (err) return console.error(err);
-                            if(obj.queries.length > ImgurQueries.numberOfImages){
+                            if (obj.queries.length > ImgurQueries.numberOfImages) {
                                 clearInterval(requestLoop);
                                 console.log("Stopping");
                             }

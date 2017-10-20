@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
+var sanitize = require('mongo-sanitize');
 
-var User   = require('../models/apiUser');
+var User = require('../models/apiUser');
 
 /* POST auth page. */
 router.post('/', function (req, res, next) {
     User.findOne({
-        name: req.body.name
+        name: sanitize(req.body.name)
     }, function (err, user) {
         if (err) throw err;
         if (!user) {
@@ -22,7 +23,7 @@ router.post('/', function (req, res, next) {
                     admin: user.admin
                 };
                 var token = jwt.sign(payload, req.app.get('tokenCreation'), {
-                    expiresIn : 60*60*24
+                    expiresIn: 60 * 60 * 24
                 });
                 res.json({
                     success: true,

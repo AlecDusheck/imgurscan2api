@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     var token = req.body.token || req.query.token || req.headers['simplyalec-access-token'];
     if (token) {
-        jwt.verify(token, req.app.get('tokenCreation'), function(err, decoded) {
+        jwt.verify(token, req.app.get('tokenCreation'), function (err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'Invalid or expired token.' });
+                return res.json({success: false, message: 'Invalid or expired token.'});
             } else {
                 req.decoded = decoded;
                 next();

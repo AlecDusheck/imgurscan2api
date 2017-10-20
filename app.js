@@ -21,15 +21,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 
-var jwt = require('jsonwebtoken');
 
 var purge = require('./imgurscan2/purge');
 
 var config = require('./config');
-var User   = require('./models/apiUser');
 
 
 // ======================================================

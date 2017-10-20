@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var mongodb = require('mongodb').MongoClient;
 
-var imgurQuery   = require('../models/imgurQuery');
+var imgurQuery = require('../models/imgurQuery');
 
 
 /* GET home page. */
-router.post('/', function(req, res, next) {
+router.post('/', function (req, res, next) {
 
     imgurQuery.remove({
         queryID: req.body.queryID
