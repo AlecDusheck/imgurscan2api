@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
             // save the sample user
             query.save(function (err) {
                 if (err) throw err;
-                var scraper = require('../imgurscan2/scraper');
+                var scraper = require('../../imgurscan2/scraper');
                 scraper.scraper(results);
                 res.json({success: true, message: 'Created query with id ' + results, queryid: results});
             });

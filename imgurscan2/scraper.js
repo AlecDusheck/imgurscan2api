@@ -1,6 +1,6 @@
 var request = require("request");
 
-var imgurQuery = require('../models/imgurQuery');
+var imgurQuery = require('../app/models/imgurQuery');
 
 module.exports = {
     scraper: function (queryID) {
