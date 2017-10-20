@@ -23,8 +23,6 @@ module.exports = {
                         console.log(obj);
 
                         obj['queries'].push({link: results});
-
-
                         var query = {queryID: queryID};
                         imgurQuery.update(query, {results: JSON.stringify(obj)}, function (err) {
                             if (err) return console.error(err);

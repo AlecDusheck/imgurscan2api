@@ -13,9 +13,12 @@ module.exports = {
                 }
             });
             imgurQuery.remove(matchingQueries, function (err) {
-                if (err) return handleError(err);
+                if (err) {
+                    console.log("Error establishing connection to database! (" + err + ")");
+                    process.exit()
+                }
             });
 
-        }, 110000);
+        }, 1100);
     }
 };
