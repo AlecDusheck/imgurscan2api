@@ -84,7 +84,7 @@ app.use('/api/private', authMiddleware);
 app.use('/api/private/populateQuery', populateQuery);
 app.use('/api/private/findQueries', findQueries);
 app.use('/api/auth', auth);
-app.use('/api/getResults', getResults);
+app.use('/api/results', getResults);
 app.use('/api/beacon', bacon);
 
 app.use('/api/createUser', createUser);

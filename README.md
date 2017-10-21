@@ -17,7 +17,7 @@ module.exports = {
 API Calls:
 POST-> <base>/api/private/populateQuery (x-www-form-urlencoded -- Params: numOfImages -- Requires Auth Token in header)
 
-GET-> <base>/api/getResults/<queryID> (No Auth is required)
+GET-> <base>/api/results/<queryID> (No Auth is required)
 
 POST-> <base>/api/auth (x-www-form-urlencoded -- Params: name, apiToken -- No Auth is required, will supply a token in JSON response)
 
