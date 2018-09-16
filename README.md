@@ -1,4 +1,4 @@
-# This is old and is probaly broken!!
+# NOTE (9/16/18) This is old, but it still (somehow) works.
 This is all the code for the ImgurScan2 back-end.
 
 
